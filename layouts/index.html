@@ -121,6 +121,30 @@
   </div>
 </section>
 
+{{/* ── FOTO ── */}}
+{{ with site.Data.photos.photos }}
+<section id="foto" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Foto</h2>
+    <div class="photo-grid">
+      {{ range . }}
+      {{ if .src }}
+      {{ if .link }}
+      <a href="{{ .link }}" class="photo-card" target="_blank" rel="noopener noreferrer">
+        <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+      </a>
+      {{ else }}
+      <div class="photo-card">
+        <img src="{{ .src }}" alt="{{ .alt }}" loading="lazy">
+      </div>
+      {{ end }}
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
 {{/* ── LIVE ── */}}
 <section id="live" class="section">
   <div class="section-inner">
