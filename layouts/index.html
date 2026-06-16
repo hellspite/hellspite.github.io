@@ -52,6 +52,32 @@
   </div>
 </section>
 
+{{/* ── VIDEO ── */}}
+{{ with site.Data.videos.videos }}
+<section id="video" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Video</h2>
+    <div class="video-grid">
+      {{ range . }}
+      <a href="https://www.youtube.com/watch?v={{ .id }}"
+         class="video-card"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Guarda il video su YouTube">
+        <img src="https://img.youtube.com/vi/{{ .id }}/maxresdefault.jpg"
+             onerror="this.src='https://img.youtube.com/vi/{{ .id }}/hqdefault.jpg'"
+             alt=""
+             loading="lazy">
+        <span class="video-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
 {{/* ── NEWS (preview) ── */}}
 <section id="news" class="section">
   <div class="section-inner">
