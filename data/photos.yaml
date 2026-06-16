@@ -1,9 +1,3 @@
 photos:
-  # Per aggiungere una foto:
-  # 1. metti il file in static/img/photos/
-  # 2. aggiungi una voce qui sotto
-  # Il campo "link" è opzionale (apre il post Instagram originale)
-  #
-  # - src: /img/photos/nome-file.jpg
-  #   alt: "descrizione"
-  #   link: https://www.instagram.com/p/XXXXXXXXX/
+  # Aggiungi qui i link ai post Instagram da mostrare
+  # - url: https://www.instagram.com/p/XXXXXXXXX/
