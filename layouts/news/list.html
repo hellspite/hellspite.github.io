@@ -1,0 +1,38 @@
+{{ define "main" }}
+<div class="page-container">
+  <header class="page-header">
+    <a href="/" class="back-link">&larr; Home</a>
+    <h1 class="page-title">News</h1>
+    {{ if .Translations }}
+    <div class="lang-switch">
+      <span class="current">{{ .Language.LanguageName }}</span>
+      {{ range .Translations }}
+        <a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </header>
+
+  {{ if .Pages }}
+  <ul class="news-full-list">
+    {{ range .Pages.ByDate.Reverse }}
+    <li class="news-full-item">
+      <time class="news-full-date">{{ .Date.Format "02.01.2006" }}</time>
+      <div class="news-full-title">
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+        {{ if .Translations }}
+          <span class="post-lang-badge">
+            {{ range .Translations }}
+              [<a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>]
+            {{ end }}
+          </span>
+        {{ end }}
+      </div>
+    </li>
+    {{ end }}
+  </ul>
+  {{ else }}
+    <p class="no-content">Nessuna news al momento.</p>
+  {{ end }}
+</div>
+{{ end }}

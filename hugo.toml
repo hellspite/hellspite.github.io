@@ -1,0 +1,31 @@
+baseURL = 'https://hellspite.com/'
+title   = 'Hellspite'
+defaultContentLanguage        = 'it'
+defaultContentLanguageInSubdir = false
+
+[languages]
+  [languages.it]
+    contentDir   = 'content/it'
+    languageName = 'IT'
+    languageCode = 'it-IT'
+    weight       = 1
+  [languages.en]
+    contentDir   = 'content/en'
+    languageName = 'EN'
+    languageCode = 'en-US'
+    weight       = 2
+
+[params]
+  tagline   = "scrivo e suono canzoni tristi per essere meno triste"
+  bandcamp  = "https://hellspite.bandcamp.com"
+  spotify   = ""   # incolla il link Spotify
+  deezer    = ""   # incolla il link Deezer
+  email     = "info@hellspite.com"
+  instagram = "https://www.instagram.com/hellspite"
+
+disableKinds = ["taxonomy", "term"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

@@ -1,0 +1,132 @@
+{{ define "main" }}
+
+{{/* ── HOME ── */}}
+<section id="home" class="section-hero">
+  <div class="section-inner">
+    <div class="hero-logo">
+      <img src="{{ "img/logo.svg" | relURL }}" alt="Hellspite"
+           onerror="this.style.display='none'">
+    </div>
+    <div class="hero-photo">
+      <img src="{{ "img/hero.jpg" | relURL }}" alt="Hellspite"
+           onerror="this.style.display='none'">
+    </div>
+    <p class="tagline">{{ site.Params.tagline }}</p>
+  </div>
+</section>
+
+{{/* ── MUSICA ── */}}
+<section id="musica" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Musica</h2>
+    <div class="music-links">
+
+      {{ with site.Params.bandcamp }}
+      <a href="{{ . }}" class="music-link" target="_blank" rel="noopener noreferrer">
+        <svg class="platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M0 18.75l7.437-12.5H24L16.563 18.75z"/>
+        </svg>
+        Bandcamp
+      </a>
+      {{ end }}
+
+      {{ with site.Params.spotify }}
+      <a href="{{ . }}" class="music-link" target="_blank" rel="noopener noreferrer">
+        <svg class="platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+        </svg>
+        Spotify
+      </a>
+      {{ end }}
+
+      {{ with site.Params.deezer }}
+      <a href="{{ . }}" class="music-link" target="_blank" rel="noopener noreferrer">
+        <svg class="platform-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18.944 13.564h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0 11.7h-1.95v1.332h1.95zm-3.25-1.95h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0-1.95h-1.95v1.332h1.95zm0 5.85h-1.95v1.332h1.95zm-3.244-1.95H10.5v1.332h1.944zm0-1.95H10.5v1.332h1.944zm0 3.9H10.5v1.332h1.944zm-3.25-1.95H7.206v1.332H9.2zm0 1.95H7.206v1.332H9.2zm-3.25 0H3.994v1.332h1.956z"/>
+        </svg>
+        Deezer
+      </a>
+      {{ end }}
+
+    </div>
+  </div>
+</section>
+
+{{/* ── NEWS (preview) ── */}}
+<section id="news" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">News</h2>
+    {{ $newsSection := site.GetPage "news" }}
+    {{ if $newsSection }}
+      {{ $posts := $newsSection.Pages.ByDate.Reverse }}
+      {{ if $posts }}
+        <ul class="news-preview-list">
+          {{ range first 3 $posts }}
+          <li class="news-preview-item">
+            <time class="news-preview-date">{{ .Date.Format "02.01.2006" }}</time>
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+          </li>
+          {{ end }}
+        </ul>
+        <p class="news-more">
+          <a href="{{ $newsSection.Permalink }}">Tutte le news &rarr;</a>
+        </p>
+      {{ else }}
+        <p class="no-content">Nessuna news al momento.</p>
+      {{ end }}
+    {{ end }}
+  </div>
+</section>
+
+{{/* ── LIVE ── */}}
+<section id="live" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Live</h2>
+    {{ $today := now.Format "2006-01-02" }}
+    {{ $upcoming := slice }}
+    {{ range site.Data.live.dates }}
+      {{ if ge .date $today }}
+        {{ $upcoming = $upcoming | append . }}
+      {{ end }}
+    {{ end }}
+    {{ if $upcoming }}
+      <ul class="live-list">
+        {{ range $upcoming }}
+        <li class="live-item">
+          <time class="live-date">{{ .date }}</time>
+          <span class="live-details">
+            <span class="live-venue">{{ .venue }}</span>
+            <span class="live-city">{{ .city }}</span>
+          </span>
+          <span class="live-action">
+            {{ if .sold_out }}
+              <span class="sold-out">Sold out</span>
+            {{ else if .link }}
+              <a href="{{ .link }}" target="_blank" rel="noopener noreferrer">Biglietti</a>
+            {{ end }}
+          </span>
+        </li>
+        {{ end }}
+      </ul>
+    {{ else }}
+      <p class="no-content">Nessuna data in programma.</p>
+    {{ end }}
+  </div>
+</section>
+
+{{/* ── CONTATTI ── */}}
+<section id="contatti" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Contatti</h2>
+    <ul class="contact-list">
+      {{ with site.Params.email }}
+      <li><a href="mailto:{{ . }}">{{ . }}</a></li>
+      {{ end }}
+      {{ with site.Params.instagram }}
+      <li><a href="{{ . }}" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+
+{{ end }}
