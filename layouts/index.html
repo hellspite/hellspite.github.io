@@ -78,7 +78,7 @@
 </section>
 {{ end }}
 
-{{/* ── NEWS (preview) ── */}}
+{{/* ── NEWS (ultima in evidenza) ── */}}
 <section id="news" class="section">
   <div class="section-inner">
     <h2 class="section-title">News</h2>
@@ -86,19 +86,36 @@
     {{ if $newsSection }}
       {{ $posts := $newsSection.Pages.ByDate.Reverse }}
       {{ if $posts }}
-        <ul class="news-preview-list">
-          {{ range first 3 $posts }}
-          <li class="news-preview-item">
-            <time class="news-preview-date">{{ .Date.Format "02.01.2006" }}</time>
-            <a href="{{ .Permalink }}">{{ .Title }}</a>
-          </li>
-          {{ end }}
-        </ul>
+        {{ $latest := index $posts 0 }}
+        <article class="news-latest">
+          <div class="news-latest-meta">
+            <time class="post-date">{{ $latest.Date.Format "02.01.2006" }}</time>
+            {{ with $latest.Translations }}
+            <div class="lang-switch">
+              <span class="current">{{ strings.ToUpper site.Language.Lang }}</span>
+              {{ range . }}
+              <span>—</span>
+              <a href="{{ .Permalink }}">{{ strings.ToUpper .Language.Lang }}</a>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+          <h3 class="news-latest-title">{{ $latest.Title }}</h3>
+          <div class="post-content">
+            {{ $latest.Content }}
+          </div>
+        </article>
+        {{ if gt (len $posts) 1 }}
         <p class="news-more">
-          <a href="{{ $newsSection.Permalink }}">Tutte le news &rarr;</a>
+          <a href="{{ $newsSection.Permalink }}">
+            {{ if eq site.Language.Lang "it" }}Tutte le news{{ else }}All news{{ end }} &rarr;
+          </a>
         </p>
+        {{ end }}
       {{ else }}
-        <p class="no-content">Nessuna news al momento.</p>
+        <p class="no-content">
+          {{ if eq site.Language.Lang "it" }}Nessuna news al momento.{{ else }}No news at the moment.{{ end }}
+        </p>
       {{ end }}
     {{ end }}
   </div>
