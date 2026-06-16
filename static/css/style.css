@@ -64,6 +64,7 @@ img {
   height: 1.8rem;
   width: auto;
   display: block;
+  filter: brightness(0) invert(1);
 }
 
 .logo-text {
@@ -132,6 +133,7 @@ img {
 .hero-logo img {
   max-width: 200px;
   margin: 0 auto;
+  filter: brightness(0) invert(1);
 }
 
 .hero-photo {
@@ -302,27 +304,27 @@ img {
 
 /* ── CONTATTI ── */
 
-.contact-list {
-  list-style: none;
+.contact-icons {
+  display: flex;
+  gap: 1.8rem;
+  align-items: center;
 }
 
-.contact-list li {
-  padding: 1.1rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 1.05rem;
-}
-
-.contact-list li:first-child {
-  border-top: 1px solid var(--border);
-}
-
-.contact-list a {
+.contact-icon {
+  color: var(--muted);
   text-decoration: none;
+  display: flex;
+  transition: color 0.15s;
+}
+
+.contact-icon:hover {
   color: var(--text);
 }
 
-.contact-list a:hover {
-  color: var(--accent);
+.contact-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
 }
 
 /* ── FOOTER ── */
