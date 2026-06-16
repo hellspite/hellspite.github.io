@@ -122,23 +122,18 @@
 </section>
 
 {{/* ── FOTO ── */}}
-{{ $photos := where site.Data.photos.photos "url" "!=" nil }}
-{{ if $photos }}
+{{ with site.Data.instagram.photos }}
 <section id="foto" class="section">
   <div class="section-inner">
     <h2 class="section-title">Foto</h2>
     <div class="photo-grid">
-      {{ range $photos }}
-      {{ $url := index (split .url "?") 0 | strings.TrimSuffix "/" }}
-      <blockquote class="instagram-media"
-                  data-instgrm-permalink="{{ $url }}/"
-                  data-instgrm-version="14"
-                  data-instgrm-captioned>
-      </blockquote>
+      {{ range . }}
+      <a href="{{ .permalink }}" class="photo-card" target="_blank" rel="noopener noreferrer">
+        <img src="{{ .src }}" alt="" loading="lazy">
+      </a>
       {{ end }}
     </div>
   </div>
-  <script async src="https://www.instagram.com/embed.js"></script>
 </section>
 {{ end }}
 

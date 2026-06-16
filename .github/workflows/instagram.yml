@@ -1,0 +1,66 @@
+name: Fetch Instagram Photos
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and download photos
+        env:
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          IG_USER_ID: ${{ secrets.INSTAGRAM_IG_USER_ID }}
+        run: |
+          mkdir -p static/img/instagram
+          python3 << 'EOF'
+          import json, urllib.request, os, sys
+
+          token = os.environ['INSTAGRAM_TOKEN']
+          user_id = os.environ['IG_USER_ID']
+
+          url = (
+            f'https://graph.facebook.com/v18.0/{user_id}/media'
+            f'?fields=id,media_type,media_url,thumbnail_url,permalink,timestamp'
+            f'&limit=9&access_token={token}'
+          )
+
+          with urllib.request.urlopen(url) as r:
+              data = json.loads(r.read())
+
+          photos = []
+          for item in data.get('data', []):
+              media_type = item.get('media_type', '')
+              img_url = item.get('thumbnail_url') if media_type == 'VIDEO' else item.get('media_url')
+              if not img_url:
+                  continue
+              filename = f"static/img/instagram/{item['id']}.jpg"
+              try:
+                  urllib.request.urlretrieve(img_url, filename)
+                  photos.append({
+                      'src': f"/img/instagram/{item['id']}.jpg",
+                      'permalink': item.get('permalink', ''),
+                      'timestamp': item.get('timestamp', '')
+                  })
+                  print(f"OK: {filename}")
+              except Exception as e:
+                  print(f"ERR {item['id']}: {e}", file=sys.stderr)
+
+          with open('data/instagram.json', 'w') as f:
+              json.dump({'photos': photos}, f, indent=2)
+          print(f"Saved {len(photos)} photos")
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/instagram.json static/img/instagram/
+          git diff --cached --quiet || (git commit -m "Update Instagram photos" && git push)
