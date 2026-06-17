@@ -149,6 +149,23 @@ img {
 
 /* ── MUSICA ── */
 
+.album-cover-link {
+  display: block;
+  width: 240px;
+  margin-bottom: 2.5rem;
+}
+
+.album-cover-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.2s;
+}
+
+.album-cover-link:hover .album-cover-img {
+  opacity: 0.85;
+}
+
 .music-links {
   display: flex;
   flex-direction: column;

@@ -15,6 +15,12 @@
 <section id="musica" class="section">
   <div class="section-inner">
     <h2 class="section-title">Musica</h2>
+    {{ with site.Params.bandcamp }}
+    <a href="{{ . }}" class="album-cover-link" target="_blank" rel="noopener noreferrer">
+      <img src="{{ "img/album-cover.jpg" | relURL }}" alt="Hellspite" class="album-cover-img">
+    </a>
+    {{ end }}
+
     <div class="music-links">
 
       {{ with site.Params.bandcamp }}
