@@ -2,15 +2,11 @@
 
 {{/* ── HOME ── */}}
 <section id="home" class="section-hero">
+  <div class="hero-banner">
+    <img src="{{ "img/hero.jpg" | relURL }}" alt="Hellspite"
+         onerror="this.style.display='none'">
+  </div>
   <div class="section-inner">
-    <div class="hero-logo">
-      <img src="{{ "img/logo.svg" | relURL }}" alt="Hellspite"
-           onerror="this.style.display='none'">
-    </div>
-    <div class="hero-photo">
-      <img src="{{ "img/hero.jpg" | relURL }}" alt="Hellspite"
-           onerror="this.style.display='none'">
-    </div>
     <p class="tagline">{{ site.Params.tagline }}</p>
   </div>
 </section>
