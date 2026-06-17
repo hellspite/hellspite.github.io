@@ -1,11 +1,11 @@
 dates:
-  - date: "2026-07-15"
-    venue: "Circolo Magnolia"
-    city: "Milano"
+  - date: "2026-06-20"
+    venue: "Uroboro"
+    city: "Roma - Pigneto"
     link: ""
     sold_out: false
-  - date: "2026-08-20"
-    venue: "Spazio211"
-    city: "Torino"
+  - date: "2026-06-21"
+    venue: "Raimondo"
+    city: "Roma - Garbatella"
     link: ""
     sold_out: false
