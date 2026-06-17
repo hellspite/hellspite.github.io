@@ -683,7 +683,7 @@ footer {
   }
 
   .section-hero {
-    padding: calc(var(--nav-h) + 3rem) 1.5rem 3rem;
+    padding: 0 1.5rem 3rem;
   }
 
   .video-grid {
