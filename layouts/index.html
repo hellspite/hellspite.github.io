@@ -92,21 +92,38 @@
         <article class="news-latest">
           <div class="news-latest-meta">
             <time class="post-date">{{ $latest.Date.Format "02.01.2006" }}</time>
-            {{ with $latest.Translations }}
+            {{ if $latest.Translations }}
             <div class="lang-switch">
-              <span class="current">{{ strings.ToUpper site.Language.Lang }}</span>
-              {{ range . }}
+              <button class="lang-btn active" data-lang="it">IT</button>
               <span>—</span>
-              <a href="{{ .Permalink }}">{{ strings.ToUpper .Language.Lang }}</a>
-              {{ end }}
+              <button class="lang-btn" data-lang="en">EN</button>
             </div>
             {{ end }}
           </div>
-          <h3 class="news-latest-title">{{ $latest.Title }}</h3>
-          <div class="post-content">
-            {{ $latest.Content }}
+          <div class="news-lang-content" data-lang="it">
+            <h3 class="news-latest-title">{{ $latest.Title }}</h3>
+            <div class="post-content">{{ $latest.Content }}</div>
           </div>
+          {{ range $latest.Translations }}
+          <div class="news-lang-content" data-lang="{{ .Language.Lang }}" hidden>
+            <h3 class="news-latest-title">{{ .Title }}</h3>
+            <div class="post-content">{{ .Content }}</div>
+          </div>
+          {{ end }}
         </article>
+        <script>
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var lang = this.dataset.lang;
+            document.querySelectorAll('.news-lang-content').forEach(function(el) {
+              el.hidden = el.dataset.lang !== lang;
+            });
+            document.querySelectorAll('.lang-btn').forEach(function(b) {
+              b.classList.toggle('active', b.dataset.lang === lang);
+            });
+          });
+        });
+        </script>
         {{ if gt (len $posts) 1 }}
         <p class="news-more">
           <a href="{{ $newsSection.Permalink }}">

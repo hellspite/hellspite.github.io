@@ -488,11 +488,26 @@ footer {
   letter-spacing: 0.15em;
 }
 
-.lang-switch .current {
-  color: var(--text);
-  text-transform: uppercase;
-  border: 1px solid var(--muted);
+.lang-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
   padding: 0.18rem 0.45rem;
+  text-transform: uppercase;
+}
+
+.lang-btn.active {
+  color: var(--text);
+  border-color: var(--muted);
+}
+
+.lang-btn:hover {
+  color: var(--text);
+  border-color: var(--muted);
 }
 
 .lang-switch a {
