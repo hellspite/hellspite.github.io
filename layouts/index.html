@@ -175,6 +175,8 @@
           <span class="live-details">
             <span class="live-venue">{{ .venue }}</span>
             <span class="live-city">{{ .city }}</span>
+            {{ if .address }}<span class="live-address">{{ .address }}</span>{{ end }}
+            {{ if .time }}<span class="live-time">{{ .time }}</span>{{ end }}
           </span>
           <span class="live-action">
             {{ if .sold_out }}

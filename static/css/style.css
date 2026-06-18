@@ -382,6 +382,18 @@ img {
   display: block;
 }
 
+.live-address {
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: block;
+}
+
+.live-time {
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: block;
+}
+
 .live-action a {
   font-size: 0.65rem;
   letter-spacing: 0.18em;
