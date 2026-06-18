@@ -11,6 +11,104 @@
   </div>
 </section>
 
+{{/* ── NEWS (ultima in evidenza) ── */}}
+<section id="news" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">News</h2>
+    {{ $newsSection := site.GetPage "news" }}
+    {{ if $newsSection }}
+      {{ $posts := $newsSection.Pages.ByDate.Reverse }}
+      {{ if $posts }}
+        {{ $latest := index $posts 0 }}
+        <article class="news-latest">
+          <div class="news-latest-meta">
+            <time class="post-date">{{ $latest.Date.Format "2 Jan 2006" }}</time>
+            {{ if $latest.Translations }}
+            <div class="lang-switch">
+              <button class="lang-btn active" data-lang="it">IT</button>
+              <span>—</span>
+              <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+            {{ end }}
+          </div>
+          <div class="news-lang-content" data-lang="it">
+            <h3 class="news-latest-title">{{ $latest.Title }}</h3>
+            <div class="post-content">{{ $latest.Content }}</div>
+          </div>
+          {{ range $latest.Translations }}
+          <div class="news-lang-content" data-lang="{{ .Language.Lang }}" hidden>
+            <h3 class="news-latest-title">{{ .Title }}</h3>
+            <div class="post-content">{{ .Content }}</div>
+          </div>
+          {{ end }}
+        </article>
+        <script>
+        document.querySelectorAll('.lang-btn').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var lang = this.dataset.lang;
+            document.querySelectorAll('.news-lang-content').forEach(function(el) {
+              el.hidden = el.dataset.lang !== lang;
+            });
+            document.querySelectorAll('.lang-btn').forEach(function(b) {
+              b.classList.toggle('active', b.dataset.lang === lang);
+            });
+          });
+        });
+        </script>
+        {{ if gt (len $posts) 1 }}
+        <p class="news-more">
+          <a href="{{ $newsSection.Permalink }}">
+            {{ if eq site.Language.Lang "it" }}Tutte le news{{ else }}All news{{ end }} &rarr;
+          </a>
+        </p>
+        {{ end }}
+      {{ else }}
+        <p class="no-content">
+          {{ if eq site.Language.Lang "it" }}Nessuna news al momento.{{ else }}No news at the moment.{{ end }}
+        </p>
+      {{ end }}
+    {{ end }}
+  </div>
+</section>
+
+{{/* ── LIVE ── */}}
+<section id="live" class="section">
+  <div class="section-inner">
+    <h2 class="section-title">Live</h2>
+    {{ $today := now.Format "2006-01-02" }}
+    {{ $upcoming := slice }}
+    {{ range site.Data.live.dates }}
+      {{ if ge .date $today }}
+        {{ $upcoming = $upcoming | append . }}
+      {{ end }}
+    {{ end }}
+    {{ if $upcoming }}
+      <ul class="live-list">
+        {{ range $upcoming }}
+        <li class="live-item">
+          <time class="live-date">{{ (time .date).Format "Mon 2 Jan 2006" }}</time>
+          <span class="live-details">
+            <span class="live-venue">{{ .venue }}</span>
+            <span class="live-city">{{ .city }}</span>
+            {{ if .address }}<span class="live-address">{{ .address }}</span>{{ end }}
+            {{ if .time }}<span class="live-time">{{ .time }}</span>{{ end }}
+          </span>
+          <span class="live-action">
+            {{ if .sold_out }}
+              <span class="sold-out">Sold out</span>
+            {{ else if .link }}
+              <a href="{{ .link }}" target="_blank" rel="noopener noreferrer">Biglietti</a>
+            {{ end }}
+          </span>
+        </li>
+        {{ end }}
+      </ul>
+    {{ else }}
+      <p class="no-content">Nessuna data in programma.</p>
+    {{ end }}
+  </div>
+</section>
+
 {{/* ── MUSICA ── */}}
 <section id="musica" class="section">
   <div class="section-inner">
@@ -80,66 +178,6 @@
 </section>
 {{ end }}
 
-{{/* ── NEWS (ultima in evidenza) ── */}}
-<section id="news" class="section">
-  <div class="section-inner">
-    <h2 class="section-title">News</h2>
-    {{ $newsSection := site.GetPage "news" }}
-    {{ if $newsSection }}
-      {{ $posts := $newsSection.Pages.ByDate.Reverse }}
-      {{ if $posts }}
-        {{ $latest := index $posts 0 }}
-        <article class="news-latest">
-          <div class="news-latest-meta">
-            <time class="post-date">{{ $latest.Date.Format "2 Jan 2006" }}</time>
-            {{ if $latest.Translations }}
-            <div class="lang-switch">
-              <button class="lang-btn active" data-lang="it">IT</button>
-              <span>—</span>
-              <button class="lang-btn" data-lang="en">EN</button>
-            </div>
-            {{ end }}
-          </div>
-          <div class="news-lang-content" data-lang="it">
-            <h3 class="news-latest-title">{{ $latest.Title }}</h3>
-            <div class="post-content">{{ $latest.Content }}</div>
-          </div>
-          {{ range $latest.Translations }}
-          <div class="news-lang-content" data-lang="{{ .Language.Lang }}" hidden>
-            <h3 class="news-latest-title">{{ .Title }}</h3>
-            <div class="post-content">{{ .Content }}</div>
-          </div>
-          {{ end }}
-        </article>
-        <script>
-        document.querySelectorAll('.lang-btn').forEach(function(btn) {
-          btn.addEventListener('click', function() {
-            var lang = this.dataset.lang;
-            document.querySelectorAll('.news-lang-content').forEach(function(el) {
-              el.hidden = el.dataset.lang !== lang;
-            });
-            document.querySelectorAll('.lang-btn').forEach(function(b) {
-              b.classList.toggle('active', b.dataset.lang === lang);
-            });
-          });
-        });
-        </script>
-        {{ if gt (len $posts) 1 }}
-        <p class="news-more">
-          <a href="{{ $newsSection.Permalink }}">
-            {{ if eq site.Language.Lang "it" }}Tutte le news{{ else }}All news{{ end }} &rarr;
-          </a>
-        </p>
-        {{ end }}
-      {{ else }}
-        <p class="no-content">
-          {{ if eq site.Language.Lang "it" }}Nessuna news al momento.{{ else }}No news at the moment.{{ end }}
-        </p>
-      {{ end }}
-    {{ end }}
-  </div>
-</section>
-
 {{/* ── FOTO ── */}}
 {{ with site.Data.instagram.photos }}
 <section id="foto" class="section">
@@ -155,44 +193,6 @@
   </div>
 </section>
 {{ end }}
-
-{{/* ── LIVE ── */}}
-<section id="live" class="section">
-  <div class="section-inner">
-    <h2 class="section-title">Live</h2>
-    {{ $today := now.Format "2006-01-02" }}
-    {{ $upcoming := slice }}
-    {{ range site.Data.live.dates }}
-      {{ if ge .date $today }}
-        {{ $upcoming = $upcoming | append . }}
-      {{ end }}
-    {{ end }}
-    {{ if $upcoming }}
-      <ul class="live-list">
-        {{ range $upcoming }}
-        <li class="live-item">
-          <time class="live-date">{{ (time .date).Format "Mon 2 Jan 2006" }}</time>
-          <span class="live-details">
-            <span class="live-venue">{{ .venue }}</span>
-            <span class="live-city">{{ .city }}</span>
-            {{ if .address }}<span class="live-address">{{ .address }}</span>{{ end }}
-            {{ if .time }}<span class="live-time">{{ .time }}</span>{{ end }}
-          </span>
-          <span class="live-action">
-            {{ if .sold_out }}
-              <span class="sold-out">Sold out</span>
-            {{ else if .link }}
-              <a href="{{ .link }}" target="_blank" rel="noopener noreferrer">Biglietti</a>
-            {{ end }}
-          </span>
-        </li>
-        {{ end }}
-      </ul>
-    {{ else }}
-      <p class="no-content">Nessuna data in programma.</p>
-    {{ end }}
-  </div>
-</section>
 
 {{/* ── CONTATTI ── */}}
 <section id="contatti" class="section">
