@@ -171,7 +171,7 @@
       <ul class="live-list">
         {{ range $upcoming }}
         <li class="live-item">
-          <time class="live-date">{{ .date }}</time>
+          <time class="live-date">{{ (time .date).Format "Mon 2 Jan 2006" }}</time>
           <span class="live-details">
             <span class="live-venue">{{ .venue }}</span>
             <span class="live-city">{{ .city }}</span>
