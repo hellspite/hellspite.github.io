@@ -20,7 +20,7 @@ defaultContentLanguageInSubdir = false
   bandcamp  = "https://hellspite.bandcamp.com"
   spotify   = ""   # incolla il link Spotify
   deezer    = ""   # incolla il link Deezer
-  email     = "info@hellspite.com"
+  email     = "hellspite@hellspite.com"
   instagram = "https://www.instagram.com/hellspite"
 
 disableKinds = ["taxonomy", "term"]
