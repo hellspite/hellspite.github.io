@@ -16,7 +16,7 @@
   <ul class="news-full-list">
     {{ range .Pages.ByDate.Reverse }}
     <li class="news-full-item">
-      <time class="news-full-date">{{ .Date.Format "02.01.2006" }}</time>
+      <time class="news-full-date">{{ .Date.Format "2 Jan 2006" }}</time>
       <div class="news-full-title">
         <a href="{{ .Permalink }}">{{ .Title }}</a>
         {{ if .Translations }}

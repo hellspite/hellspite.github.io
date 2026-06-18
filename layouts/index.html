@@ -91,7 +91,7 @@
         {{ $latest := index $posts 0 }}
         <article class="news-latest">
           <div class="news-latest-meta">
-            <time class="post-date">{{ $latest.Date.Format "02.01.2006" }}</time>
+            <time class="post-date">{{ $latest.Date.Format "2 Jan 2006" }}</time>
             {{ if $latest.Translations }}
             <div class="lang-switch">
               <button class="lang-btn active" data-lang="it">IT</button>
