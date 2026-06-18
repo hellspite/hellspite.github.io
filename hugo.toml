@@ -9,14 +9,17 @@ defaultContentLanguageInSubdir = false
     languageName = 'IT'
     languageCode = 'it-IT'
     weight       = 1
+    [languages.it.params]
+      tagline = "scrivo e suono canzoni tristi per essere meno triste"
   [languages.en]
     contentDir   = 'content/en'
     languageName = 'EN'
     languageCode = 'en-US'
     weight       = 2
+    [languages.en.params]
+      tagline = "I write and play sad songs to be less sad"
 
 [params]
-  tagline   = "scrivo e suono canzoni tristi per essere meno triste"
   bandcamp  = "https://hellspite.bandcamp.com"
   spotify   = ""   # incolla il link Spotify
   deezer    = ""   # incolla il link Deezer
