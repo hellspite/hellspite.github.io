@@ -13,3 +13,10 @@ dates:
     time: "18.00"
     link: ""
     sold_out: false
+  - date: "2026-09-11"
+    venue: "Caffè L'Orologio"
+    city: "Latina"
+    address: "Via dell'Agorà"
+    time: "19.30"
+    link: ""
+    sold_out: false
