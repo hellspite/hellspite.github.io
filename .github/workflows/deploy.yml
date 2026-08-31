@@ -41,7 +41,9 @@ jobs:
       - name: Build
         env:
           HUGO_ENVIRONMENT: production
-        run: hugo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+        # niente --baseURL: con il dominio custom actions/configure-pages
+        # restituisce http://, mentre hugo.toml ha gia' https://hellspite.com/
+        run: hugo --minify
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
