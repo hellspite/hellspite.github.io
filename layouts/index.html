@@ -22,7 +22,7 @@
     {{ with $next }}
     <a href="#live" class="hero-next-live">
       <span class="hero-next-label">{{ i18n "next_show" }}</span>
-      <span class="hero-next-date">{{ (time .date).Format "2 Jan 2006" }}</span>
+      <time class="hero-next-date" datetime="{{ .date }}">{{ time.Format "2 Jan 2006" .date }}</time>
       <span class="hero-next-place">{{ .venue }}, {{ .city }}</span>
     </a>
     {{ end }}
@@ -43,7 +43,7 @@
         {{ $latest := index $posts 0 }}
         <article class="news-latest">
           <div class="news-latest-meta">
-            <time class="post-date">{{ $latest.Date.Format "2 Jan 2006" }}</time>
+            <time class="post-date" datetime="{{ $latest.Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" $latest.Date }}</time>
           </div>
           <h3 class="news-latest-title">{{ $latest.Title }}</h3>
           <div class="post-content">{{ $latest.Content }}</div>
@@ -79,7 +79,7 @@
       <ul class="live-list">
         {{ range $upcoming }}
         <li class="live-item">
-          <time class="live-date">{{ (time .date).Format "Mon 2 Jan 2006" }}</time>
+          <time class="live-date" datetime="{{ .date }}">{{ time.Format "Mon 2 Jan 2006" .date }}</time>
           <span class="live-details">
             <span class="live-venue">{{ .venue }}</span>
             <span class="live-city">{{ .city }}</span>

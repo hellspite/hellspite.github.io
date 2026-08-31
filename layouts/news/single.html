@@ -6,7 +6,7 @@
 
 
     <h1 class="post-title">{{ .Title }}</h1>
-    <time class="post-date">{{ .Date.Format "2 Jan 2006" }}</time>
+    <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" .Date }}</time>
   </header>
 
   <div class="post-content">
