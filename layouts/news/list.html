@@ -9,16 +9,13 @@
     {{ range .Pages.ByDate.Reverse }}
     <li class="news-full-item">
       <time class="news-full-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" .Date }}</time>
-      <div class="news-full-title">
-        <a href="{{ .Permalink }}">{{ .Title }}</a>
-        {{ if .Translations }}
-          <span class="post-lang-badge">
-            {{ range .Translations }}
-              [<a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>]
-            {{ end }}
-          </span>
-        {{ end }}
-      </div>
+      <h2 class="news-full-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+      {{/* description dal front matter, altrimenti le prime righe del post */}}
+      {{ $excerpt := .Description }}
+      {{ if not $excerpt }}{{ $excerpt = .Summary | plainify }}{{ end }}
+      {{ with $excerpt }}
+      <p class="news-full-excerpt">{{ . | truncate 180 }}</p>
+      {{ end }}
     </li>
     {{ end }}
   </ul>

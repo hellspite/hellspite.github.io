@@ -39,22 +39,21 @@
     {{ $newsSection := site.GetPage "news" }}
     {{ if $newsSection }}
       {{ $posts := $newsSection.Pages.ByDate.Reverse }}
+      {{ $howMany := 3 }}
       {{ if $posts }}
-        {{ $latest := index $posts 0 }}
-        <article class="news-latest">
-          <div class="news-latest-meta">
-            <time class="post-date" datetime="{{ $latest.Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" $latest.Date }}</time>
-          </div>
-          <h3 class="news-latest-title">{{ $latest.Title }}</h3>
-          <div class="post-content">{{ $latest.Content }}</div>
+        {{ range first $howMany $posts }}
+        <article class="news-item">
+          <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ time.Format "2 Jan 2006" .Date }}</time>
+          <h3 class="news-item-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+          <div class="post-content">{{ .Content }}</div>
         </article>
-        {{ if gt (len $posts) 1 }}
+        {{ end }}
+        {{/* l'archivio resta sempre a un clic: e' il modo di ripescare i post vecchi */}}
         <p class="news-more">
           <a href="{{ $newsSection.Permalink }}">
             {{ i18n "all_news" }} &rarr;
           </a>
         </p>
-        {{ end }}
       {{ else }}
         <p class="no-content">
           {{ i18n "no_news" }}

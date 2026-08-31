@@ -55,6 +55,11 @@
 <meta name="twitter:description" content="{{ $desc }}">
 <meta name="twitter:image"       content="{{ $ogImage }}">
 
+{{/* feed RSS, cosi' i lettori di feed lo trovano */}}
+{{ range .AlternativeOutputFormats }}
+<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $title }}">
+{{ end }}
+
 <link rel="icon" href="{{ "img/favicon.svg" | relURL }}" type="image/svg+xml">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

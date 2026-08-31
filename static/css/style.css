@@ -477,54 +477,33 @@ img {
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
 }
 
-/* ── NEWS LATEST (home) ── */
+/* ── NEWS (home) ── */
 
-.news-latest-meta {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  margin-bottom: 0.6rem;
-}
-
-.news-latest-title {
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.25;
-  margin-bottom: 1.2rem;
-}
-
-/* ── NEWS PREVIEW (home) ── */
-
-.news-preview-list {
-  list-style: none;
-}
-
-.news-preview-item {
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  padding: 1.1rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.news-preview-item:first-child {
+.news-item + .news-item {
+  margin-top: 2.8rem;
+  padding-top: 2.8rem;
   border-top: 1px solid var(--border);
 }
 
-.news-preview-date {
-  font-size: 0.72rem;
-  color: var(--muted);
-  letter-spacing: 0.05em;
-  flex-shrink: 0;
+.news-item-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0.3rem 0 1.2rem;
 }
 
-.news-preview-item a {
+.news-item-title a {
   text-decoration: none;
-  font-size: 1.05rem;
+  transition: color 0.25s ease;
 }
 
-.news-preview-item a:hover {
+.news-item-title a:hover {
   color: var(--accent);
+}
+
+/* il post piu' recente e' gia' aperto: l'ultimo blocco non chiude con una riga */
+.news-item .post-content > *:last-child {
+  margin-bottom: 0;
 }
 
 .news-more {
@@ -815,10 +794,7 @@ footer {
 }
 
 .news-full-item {
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  padding: 1.1rem 0;
+  padding: 1.6rem 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -829,32 +805,32 @@ footer {
 .news-full-date {
   font-size: 0.72rem;
   color: var(--muted);
-  flex-shrink: 0;
+  letter-spacing: 0.05em;
+  display: block;
+}
+
+.news-full-title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0.25rem 0;
 }
 
 .news-full-title a {
-  font-size: 1.05rem;
   text-decoration: none;
   color: var(--text);
+  transition: color 0.25s ease;
 }
 
 .news-full-title a:hover {
   color: var(--accent);
 }
 
-.post-lang-badge {
-  font-size: 0.68rem;
+.news-full-excerpt {
+  font-size: 0.92rem;
+  line-height: 1.6;
   color: var(--muted);
-  margin-left: 0.5rem;
-}
-
-.post-lang-badge a {
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.post-lang-badge a:hover {
-  color: var(--text);
+  max-width: 46ch;
 }
 
 /* ── NEWS SINGLE ── */
@@ -1085,8 +1061,17 @@ footer {
     margin-bottom: 1.8rem;
   }
 
-  .news-latest-title {
+  .news-item-title {
     font-size: 1.3rem;
+  }
+
+  .news-item + .news-item {
+    margin-top: 2.2rem;
+    padding-top: 2.2rem;
+  }
+
+  .news-full-title {
+    font-size: 1.05rem;
   }
 
   .video-grid,
@@ -1162,12 +1147,6 @@ footer {
     font-size: 1.5rem;
   }
 
-  .news-full-item,
-  .news-preview-item {
-    flex-direction: column;
-    gap: 0.25rem;
-    align-items: flex-start;
-  }
 
   .page-container,
   .post-container {
