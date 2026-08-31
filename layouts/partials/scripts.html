@@ -1,5 +1,7 @@
 <script>
 (function () {
+  window.__hsReady = true;
+
   var nav = document.getElementById('nav');
   var toggle = nav ? nav.querySelector('.nav-toggle') : null;
   var links = nav ? nav.querySelectorAll('.nav-links a') : [];
@@ -42,6 +44,104 @@
   document.addEventListener('click', function (e) {
     if (nav && nav.classList.contains('nav-open') && !nav.contains(e.target)) closeMenu();
   });
+
+  /* ── lightbox foto ── */
+  var cards = Array.prototype.slice.call(
+    document.querySelectorAll('.photo-card[data-full]')
+  );
+
+  if (cards.length) {
+    var box = document.createElement('div');
+    box.className = 'lightbox';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', '{{ if eq site.Language.Lang "it" }}Foto{{ else }}Photos{{ end }}');
+    box.innerHTML =
+      '<img class="lightbox-img" alt="">' +
+      '<button class="lightbox-close" aria-label="{{ if eq site.Language.Lang "it" }}Chiudi{{ else }}Close{{ end }}">&times;</button>' +
+      '<button class="lightbox-prev" aria-label="{{ if eq site.Language.Lang "it" }}Precedente{{ else }}Previous{{ end }}">&lsaquo;</button>' +
+      '<button class="lightbox-next" aria-label="{{ if eq site.Language.Lang "it" }}Successiva{{ else }}Next{{ end }}">&rsaquo;</button>' +
+      '<a class="lightbox-link" target="_blank" rel="noopener noreferrer">{{ if eq site.Language.Lang "it" }}Apri su Instagram{{ else }}Open on Instagram{{ end }}</a>';
+    document.body.appendChild(box);
+
+    var boxImg = box.querySelector('.lightbox-img');
+    var boxLink = box.querySelector('.lightbox-link');
+    var closeBtn = box.querySelector('.lightbox-close');
+    var index = 0;
+    var lastFocus = null;
+
+    function show(i) {
+      index = (i + cards.length) % cards.length;
+      var card = cards[index];
+      boxImg.src = card.dataset.full;
+      boxLink.href = card.href;
+      /* precarica le adiacenti, così le frecce sono istantanee */
+      [index - 1, index + 1].forEach(function (n) {
+        var c = cards[(n + cards.length) % cards.length];
+        new Image().src = c.dataset.full;
+      });
+    }
+
+    function open(i) {
+      lastFocus = document.activeElement;
+      show(i);
+      box.classList.add('is-open');
+      document.body.classList.add('lightbox-open');
+      closeBtn.focus();
+    }
+
+    function close() {
+      box.classList.remove('is-open');
+      document.body.classList.remove('lightbox-open');
+      if (lastFocus) lastFocus.focus();
+    }
+
+    cards.forEach(function (card, i) {
+      card.addEventListener('click', function (e) {
+        e.preventDefault();
+        open(i);
+      });
+    });
+
+    box.querySelector('.lightbox-prev').addEventListener('click', function () { show(index - 1); });
+    box.querySelector('.lightbox-next').addEventListener('click', function () { show(index + 1); });
+    closeBtn.addEventListener('click', close);
+
+    /* click sullo sfondo: chiude */
+    box.addEventListener('click', function (e) {
+      if (e.target === box) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!box.classList.contains('is-open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') show(index - 1);
+      else if (e.key === 'ArrowRight') show(index + 1);
+      else if (e.key === 'Tab') {
+        /* mantiene il focus dentro il dialog */
+        var focusable = box.querySelectorAll('button, a[href]');
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault(); first.focus();
+        }
+      }
+    });
+
+    /* swipe orizzontale su mobile */
+    var touchX = null;
+    box.addEventListener('touchstart', function (e) {
+      touchX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    box.addEventListener('touchend', function (e) {
+      if (touchX === null) return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 50) show(dx > 0 ? index - 1 : index + 1);
+      touchX = null;
+    }, { passive: true });
+  }
 
   /* ── comparsa progressiva delle sezioni ── */
   if ('IntersectionObserver' in window) {

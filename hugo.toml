@@ -21,6 +21,8 @@ defaultContentLanguageInSubdir = false
 
 [params]
   bandcamp  = "https://hellspite.bandcamp.com"
+  # ID numerico dell'album per il player embed (svuota per mostrare solo la copertina)
+  bandcampAlbumId = "922397192"
   spotify   = ""   # incolla il link Spotify
   deezer    = ""   # incolla il link Deezer
   email     = "hellspite@hellspite.com"

@@ -19,7 +19,7 @@ jobs:
           INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
           IG_USER_ID: ${{ secrets.INSTAGRAM_IG_USER_ID }}
         run: |
-          mkdir -p static/img/instagram
+          mkdir -p assets/img/instagram
           python3 << 'EOF'
           import json, urllib.request, os, sys
 
@@ -41,7 +41,7 @@ jobs:
               img_url = item.get('thumbnail_url') if media_type == 'VIDEO' else item.get('media_url')
               if not img_url:
                   continue
-              filename = f"static/img/instagram/{item['id']}.jpg"
+              filename = f"assets/img/instagram/{item['id']}.jpg"
               try:
                   urllib.request.urlretrieve(img_url, filename)
                   photos.append({
@@ -62,5 +62,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/instagram.json static/img/instagram/
+          git add data/instagram.json assets/img/instagram/
           git diff --cached --quiet || (git commit -m "Update Instagram photos" && git push)

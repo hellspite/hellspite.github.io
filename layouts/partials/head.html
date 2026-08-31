@@ -1,7 +1,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d0d">
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.__hsReady)document.documentElement.classList.remove('js')},2000)</script>
 
 {{ $title := site.Title }}
 {{ if not .IsHome }}{{ $title = printf "%s — %s" .Title site.Title }}{{ end }}

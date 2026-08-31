@@ -246,12 +246,59 @@ img {
   display: block;
 }
 
+.hero-title {
+  font-size: clamp(2.4rem, 9vw, 3.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-indent: 0.16em;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
 .tagline {
   font-style: italic;
   font-size: 1.15rem;
   color: var(--muted);
   max-width: 460px;
   margin: 0 auto;
+}
+
+/* prossima data live in evidenza sull'hero */
+.hero-next-live {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin-top: 2.2rem;
+  padding: 0.9rem 1.6rem;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.hero-next-live:hover {
+  border-color: var(--muted);
+  background: rgba(196, 168, 130, 0.05);
+}
+
+.hero-next-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-next-date {
+  font-size: 1.05rem;
+  color: var(--accent);
+  line-height: 1.4;
+}
+
+.hero-next-place {
+  font-size: 0.75rem;
+  color: var(--muted);
 }
 
 .scroll-cue {
@@ -308,6 +355,18 @@ img {
 
 .album-cover-link:hover .album-cover-img {
   opacity: 0.85;
+}
+
+.bandcamp-player {
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--border);
+}
+
+.bandcamp-player iframe {
+  display: block;
+  width: 100%;
+  height: 420px;
+  border: 0;
 }
 
 .music-links {
@@ -488,6 +547,95 @@ img {
 
 .photo-card:hover img {
   opacity: 0.8;
+}
+
+/* ── LIGHTBOX ── */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1rem;
+  background: rgba(8, 8, 8, 0.96);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.lightbox-img {
+  max-width: min(100%, 900px);
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform: scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.lightbox.is-open .lightbox-img {
+  transform: none;
+}
+
+.lightbox button {
+  position: absolute;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+  line-height: 1;
+  padding: 0.6rem;
+  transition: color 0.2s ease;
+}
+
+.lightbox button:hover {
+  color: var(--text);
+}
+
+.lightbox-close {
+  top: 0.4rem;
+  right: 0.6rem;
+  font-size: 2rem;
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.2rem;
+  width: 3rem;
+}
+
+.lightbox-prev { left: 0.2rem; }
+.lightbox-next { right: 0.2rem; }
+
+.lightbox-link {
+  position: absolute;
+  bottom: 1.1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.lightbox-link:hover {
+  color: var(--text);
+}
+
+body.lightbox-open {
+  overflow: hidden;
 }
 
 /* ── LIVE ── */
@@ -968,6 +1116,36 @@ footer {
     max-width: 280px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .bandcamp-player iframe {
+    height: 380px;
+  }
+
+  .hero-title {
+    letter-spacing: 0.12em;
+    text-indent: 0.12em;
+  }
+
+  .hero-next-live {
+    margin-top: 1.8rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .lightbox {
+    padding: 3.5rem 0.5rem 3rem;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    top: auto;
+    bottom: 0.5rem;
+    transform: none;
+    font-size: 1.9rem;
+  }
+
+  .lightbox-link {
+    bottom: 1rem;
   }
 
   .music-link {

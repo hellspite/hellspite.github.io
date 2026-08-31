@@ -3,11 +3,29 @@
 {{/* ── HOME ── */}}
 <section id="home" class="section-hero">
   <div class="hero-banner">
-    <img src="{{ "img/hero.jpg" | relURL }}" alt="Hellspite"
-         onerror="this.style.display='none'">
+    {{ with resources.Get "img/hero.jpg" }}
+      {{ $w := .Process "webp q72" }}
+      <img src="{{ $w.RelPermalink }}" width="{{ $w.Width }}" height="{{ $w.Height }}"
+           alt="Hellspite" fetchpriority="high" decoding="async">
+    {{ end }}
   </div>
   <div class="section-inner reveal">
+    <h1 class="hero-title">{{ site.Title }}</h1>
     <p class="tagline">{{ site.Params.tagline }}</p>
+
+    {{/* prossima data live in evidenza */}}
+    {{ $today := now.Format "2006-01-02" }}
+    {{ $next := false }}
+    {{ range sort site.Data.live.dates "date" }}
+      {{ if and (not $next) (ge .date $today) }}{{ $next = . }}{{ end }}
+    {{ end }}
+    {{ with $next }}
+    <a href="#live" class="hero-next-live">
+      <span class="hero-next-label">{{ if eq site.Language.Lang "it" }}Prossima data{{ else }}Next show{{ end }}</span>
+      <span class="hero-next-date">{{ (time .date).Format "2 Jan 2006" }}</span>
+      <span class="hero-next-place">{{ .venue }}, {{ .city }}</span>
+    </a>
+    {{ end }}
   </div>
   <a href="#news" class="scroll-cue" aria-label="{{ if eq site.Language.Lang "it" }}Scorri{{ else }}Scroll{{ end }}">
     <span aria-hidden="true"></span>
@@ -80,7 +98,7 @@
     <h2 class="section-title">Live</h2>
     {{ $today := now.Format "2006-01-02" }}
     {{ $upcoming := slice }}
-    {{ range site.Data.live.dates }}
+    {{ range sort site.Data.live.dates "date" }}
       {{ if ge .date $today }}
         {{ $upcoming = $upcoming | append . }}
       {{ end }}
@@ -116,10 +134,26 @@
 <section id="musica" class="section">
   <div class="section-inner reveal">
     <h2 class="section-title">Musica</h2>
+    {{ if site.Params.bandcampAlbumId }}
+    <div class="bandcamp-player">
+      <iframe title="Bandcamp player"
+              src="https://bandcamp.com/EmbeddedPlayer/album={{ site.Params.bandcampAlbumId }}/size=large/bgcol=333333/linkcol=e0dbd4/artwork=small/tracklist=true/transparent=true/"
+              seamless loading="lazy">
+        <a href="{{ site.Params.bandcamp }}">Hellspite su Bandcamp</a>
+      </iframe>
+    </div>
+    {{ else }}
     {{ with site.Params.bandcamp }}
     <a href="{{ . }}" class="album-cover-link" target="_blank" rel="noopener noreferrer">
-      <img src="{{ "img/album-cover.jpg" | relURL }}" alt="Hellspite" class="album-cover-img">
+      {{ with resources.Get "img/album-cover.jpg" }}
+        {{ $sm := (.Resize "280x webp q82").RelPermalink }}
+        {{ $lg := (.Resize "560x webp q82").RelPermalink }}
+        <img src="{{ $sm }}" srcset="{{ $sm }} 280w, {{ $lg }} 560w"
+             sizes="(max-width: 640px) 280px, 240px"
+             width="280" height="280" alt="Hellspite" class="album-cover-img" loading="lazy">
+      {{ end }}
     </a>
+    {{ end }}
     {{ end }}
 
     <div class="music-links">
@@ -188,8 +222,16 @@
     <h2 class="section-title">Foto</h2>
     <div class="photo-grid">
       {{ range . }}
-      <a href="{{ .permalink }}" class="photo-card" target="_blank" rel="noopener noreferrer">
-        <img src="{{ .src }}" alt="" loading="lazy">
+      {{ $img := resources.Get (strings.TrimPrefix "/" .src) }}
+      <a href="{{ .permalink }}" class="photo-card" target="_blank" rel="noopener noreferrer"
+         {{ with $img }}data-full="{{ (.Resize "1200x webp q80").RelPermalink }}"{{ end }}>
+        {{ with $img }}
+        {{ $sm := (.Fill "320x320 webp q80").RelPermalink }}
+        {{ $lg := (.Fill "640x640 webp q80").RelPermalink }}
+        <img src="{{ $sm }}" srcset="{{ $sm }} 320w, {{ $lg }} 640w"
+             sizes="(max-width: 640px) 45vw, 240px"
+             width="320" height="320" alt="" loading="lazy" decoding="async">
+        {{ end }}
       </a>
       {{ end }}
     </div>
