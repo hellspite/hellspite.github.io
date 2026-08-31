@@ -1,15 +1,7 @@
 {{ define "main" }}
 <div class="page-container">
   <header class="page-header">
-<h1 class="page-title">News</h1>
-    {{ if .Translations }}
-    <div class="lang-switch">
-      <span class="current">{{ .Language.LanguageName }}</span>
-      {{ range .Translations }}
-        <a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
-      {{ end }}
-    </div>
-    {{ end }}
+<h1 class="page-title">{{ i18n "nav_news" }}</h1>
   </header>
 
   {{ if .Pages }}
@@ -31,7 +23,7 @@
     {{ end }}
   </ul>
   {{ else }}
-    <p class="no-content">Nessuna news al momento.</p>
+    <p class="no-content">{{ i18n "no_news" }}</p>
   {{ end }}
 </div>
 {{ end }}

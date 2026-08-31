@@ -1,0 +1,16 @@
+{{/*
+  Restituisce la pagina equivalente nell'altra lingua: {url, lang, name}.
+  Se la pagina corrente non è tradotta ricade sulla home dell'altra lingua,
+  così lo switcher c'è sempre e non porta mai a un 404.
+*/}}
+{{ $out := false }}
+{{ with index .Translations 0 }}
+  {{ $out = dict "url" .Permalink "lang" .Language.Lang "name" .Language.LanguageName "exact" true }}
+{{ else }}
+  {{ range site.Sites }}
+    {{ if ne .Language.Lang site.Language.Lang }}
+      {{ $out = dict "url" .Home.Permalink "lang" .Language.Lang "name" .Language.LanguageName "exact" false }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $out }}

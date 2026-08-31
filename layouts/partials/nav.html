@@ -1,18 +1,28 @@
+{{/* la home dell'altra lingua per gli anchor: / oppure /en/ */}}
+{{ $home := "/" | relLangURL }}
 <nav id="nav">
-  <a href="/" class="nav-logo" aria-label="Hellspite">
+  <a href="{{ $home }}" class="nav-logo" aria-label="Hellspite">
     <img src="{{ "img/logo.svg" | relURL }}" alt="Hellspite" class="logo-img"
          onerror="this.outerHTML='<span class=&quot;logo-text&quot;>Hellspite</span>'">
   </a>
   <ul class="nav-links">
-    <li><a href="/#home">Home</a></li>
-    <li><a href="{{ "news/" | relLangURL }}">News</a></li>
-    <li><a href="/#live">Live</a></li>
-    <li><a href="/#musica">Musica</a></li>
-    <li><a href="/#video">Video</a></li>
-    <li><a href="/#foto">Foto</a></li>
-    <li><a href="/#contatti">Contatti</a></li>
+    <li><a href="{{ $home }}#home">{{ i18n "nav_home" }}</a></li>
+    <li><a href="{{ "news/" | relLangURL }}">{{ i18n "nav_news" }}</a></li>
+    <li><a href="{{ $home }}#live">{{ i18n "nav_live" }}</a></li>
+    <li><a href="{{ $home }}#musica">{{ i18n "nav_music" }}</a></li>
+    <li><a href="{{ $home }}#video">{{ i18n "nav_video" }}</a></li>
+    <li><a href="{{ $home }}#foto">{{ i18n "nav_photos" }}</a></li>
+    <li><a href="{{ $home }}#contatti">{{ i18n "nav_contact" }}</a></li>
+    {{ with partial "translation-link.html" . }}
+    <li class="nav-lang">
+      <span class="nav-lang-current" aria-current="true">{{ site.Language.LanguageName }}</span>
+      <span class="nav-lang-sep" aria-hidden="true">/</span>
+      <a href="{{ .url }}" class="nav-lang-alt" hreflang="{{ .lang }}" lang="{{ .lang }}"
+         data-lang-switch="{{ .lang }}" title="{{ i18n "language" }}">{{ .name }}</a>
+    </li>
+    {{ end }}
   </ul>
-  <button class="nav-toggle" aria-label="Menu" aria-expanded="false"
+  <button class="nav-toggle" aria-label="{{ i18n "menu" }}" aria-expanded="false"
           onclick="const n=document.getElementById('nav');const open=n.classList.toggle('nav-open');this.setAttribute('aria-expanded',open)">
     <span></span><span></span><span></span>
   </button>

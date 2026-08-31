@@ -1,0 +1,52 @@
+# Etichette dell'interfaccia. I contenuti (news) stanno in content/it.
+
+[nav_home]
+other = "Home"
+[nav_news]
+other = "News"
+[nav_live]
+other = "Live"
+[nav_music]
+other = "Musica"
+[nav_video]
+other = "Video"
+[nav_photos]
+other = "Foto"
+[nav_contact]
+other = "Contatti"
+
+[menu]
+other = "Menu"
+[scroll]
+other = "Scorri"
+[next_show]
+other = "Prossima data"
+
+[all_news]
+other = "Tutte le news"
+[no_news]
+other = "Nessuna news al momento."
+[no_shows]
+other = "Nessuna data in programma."
+[tickets]
+other = "Biglietti"
+[sold_out]
+other = "Sold out"
+[watch_on_youtube]
+other = "Guarda il video su YouTube"
+
+[back_to_news]
+other = "News"
+[language]
+other = "Lingua"
+
+[photos]
+other = "Foto"
+[open_on_instagram]
+other = "Apri su Instagram"
+[close]
+other = "Chiudi"
+[previous]
+other = "Precedente"
+[next]
+other = "Successiva"

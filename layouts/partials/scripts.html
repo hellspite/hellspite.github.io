@@ -13,6 +13,13 @@
     if (toggle) toggle.setAttribute('aria-expanded', 'false');
   }
 
+  /* ── ricorda la lingua scelta con lo switcher ── */
+  document.addEventListener('click', function (e) {
+    var sw = e.target.closest('[data-lang-switch]');
+    if (!sw) return;
+    try { localStorage.setItem('hs-lang', sw.dataset.langSwitch); } catch (err) {}
+  });
+
   /* ── nav: sfondo pieno appena si scrolla ── */
   function onScroll() {
     if (nav) nav.classList.toggle('nav-scrolled', window.scrollY > 24);
@@ -55,13 +62,13 @@
     box.className = 'lightbox';
     box.setAttribute('role', 'dialog');
     box.setAttribute('aria-modal', 'true');
-    box.setAttribute('aria-label', '{{ if eq site.Language.Lang "it" }}Foto{{ else }}Photos{{ end }}');
+    box.setAttribute('aria-label', '{{ i18n "photos" }}');
     box.innerHTML =
       '<img class="lightbox-img" alt="">' +
-      '<button class="lightbox-close" aria-label="{{ if eq site.Language.Lang "it" }}Chiudi{{ else }}Close{{ end }}">&times;</button>' +
-      '<button class="lightbox-prev" aria-label="{{ if eq site.Language.Lang "it" }}Precedente{{ else }}Previous{{ end }}">&lsaquo;</button>' +
-      '<button class="lightbox-next" aria-label="{{ if eq site.Language.Lang "it" }}Successiva{{ else }}Next{{ end }}">&rsaquo;</button>' +
-      '<a class="lightbox-link" target="_blank" rel="noopener noreferrer">{{ if eq site.Language.Lang "it" }}Apri su Instagram{{ else }}Open on Instagram{{ end }}</a>';
+      '<button class="lightbox-close" aria-label="{{ i18n "close" }}">&times;</button>' +
+      '<button class="lightbox-prev" aria-label="{{ i18n "previous" }}">&lsaquo;</button>' +
+      '<button class="lightbox-next" aria-label="{{ i18n "next" }}">&rsaquo;</button>' +
+      '<a class="lightbox-link" target="_blank" rel="noopener noreferrer">{{ i18n "open_on_instagram" }}</a>';
     document.body.appendChild(box);
 
     var boxImg = box.querySelector('.lightbox-img');

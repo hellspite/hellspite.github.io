@@ -1,0 +1,52 @@
+# Interface labels. Content (news) lives in content/en.
+
+[nav_home]
+other = "Home"
+[nav_news]
+other = "News"
+[nav_live]
+other = "Live"
+[nav_music]
+other = "Music"
+[nav_video]
+other = "Video"
+[nav_photos]
+other = "Photos"
+[nav_contact]
+other = "Contact"
+
+[menu]
+other = "Menu"
+[scroll]
+other = "Scroll"
+[next_show]
+other = "Next show"
+
+[all_news]
+other = "All news"
+[no_news]
+other = "No news at the moment."
+[no_shows]
+other = "No shows scheduled."
+[tickets]
+other = "Tickets"
+[sold_out]
+other = "Sold out"
+[watch_on_youtube]
+other = "Watch the video on YouTube"
+
+[back_to_news]
+other = "News"
+[language]
+other = "Language"
+
+[photos]
+other = "Photos"
+[open_on_instagram]
+other = "Open on Instagram"
+[close]
+other = "Close"
+[previous]
+other = "Previous"
+[next]
+other = "Next"
