@@ -17,6 +17,7 @@
 html {
   font-size: 20px;
   background: var(--bg);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -25,6 +26,11 @@ body {
   font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -46,12 +52,20 @@ img {
   right: 0;
   z-index: 100;
   height: var(--nav-h);
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background: rgba(13, 13, 13, 0.72);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border-bottom: 1px solid transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2.5rem;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+#nav.nav-scrolled {
+  background: rgba(13, 13, 13, 0.92);
+  border-bottom-color: var(--border);
 }
 
 .nav-logo {
@@ -81,21 +95,47 @@ img {
 }
 
 .nav-links a {
+  position: relative;
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.45rem;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
 }
 
 .nav-links a:hover {
   color: var(--text);
 }
 
+.nav-links a:hover::after,
+.nav-links a.is-active::after {
+  transform: scaleX(1);
+}
+
+.nav-links a.is-active {
+  color: var(--text);
+}
+
 /* ── LAYOUT ── */
 
 .section-hero {
+  position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -105,7 +145,61 @@ img {
 }
 
 .section {
-  padding: 6rem 2rem;
+  position: relative;
+  padding: 7rem 2rem;
+}
+
+/* separatore morbido tra sezioni, al posto dello stacco netto */
+.section + .section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(var(--max-w), calc(100% - 4rem));
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(196, 168, 130, 0.22) 25%,
+    rgba(196, 168, 130, 0.22) 75%,
+    transparent);
+}
+
+.section-hero,
+.section {
+  scroll-margin-top: var(--nav-h);
+}
+
+/* ── REVEAL ON SCROLL ── */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .section-inner {
@@ -127,10 +221,23 @@ img {
 /* ── HERO ── */
 
 .hero-banner {
+  position: relative;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
   margin-top: var(--nav-h);
   margin-bottom: 3rem;
+}
+
+/* sfumatura: l'immagine si dissolve nello sfondo invece di tagliarsi netta */
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 35%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(13, 13, 13, 0), var(--bg));
 }
 
 .hero-banner img {
@@ -145,6 +252,43 @@ img {
   color: var(--muted);
   max-width: 460px;
   margin: 0 auto;
+}
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.6rem;
+  transform: translateX(-50%);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.75;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.scroll-cue:hover {
+  opacity: 1;
+  color: var(--text);
+}
+
+.scroll-cue span {
+  display: block;
+  transform-origin: top;
+  width: 1px;
+  height: 2.2rem;
+  background: linear-gradient(to bottom, var(--muted), transparent);
+  animation: cue 2.4s ease-in-out infinite;
+}
+
+@keyframes cue {
+  0%, 100% { transform: scaleY(1);   opacity: 0.4; }
+  50%      { transform: scaleY(0.55); opacity: 1;  }
 }
 
 /* ── MUSICA ── */
@@ -666,9 +810,34 @@ footer {
   transform: translateY(-6px) rotate(-45deg);
 }
 
+/* ── TOUCH ── */
+
+/* su touch l'hover resta "incollato": mostra sempre lo stato utile */
+@media (hover: none) {
+  .video-play {
+    opacity: 0.85;
+  }
+
+  .video-play svg {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
+
 /* ── RESPONSIVE ── */
 
+@media (max-width: 900px) {
+  .video-grid,
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 640px) {
+  :root {
+    --nav-h: 56px;
+  }
+
   html {
     font-size: 18px;
   }
@@ -676,62 +845,161 @@ footer {
   #nav {
     padding: 0 1.2rem;
     flex-wrap: wrap;
-    height: auto;
-    min-height: var(--nav-h);
+    height: var(--nav-h);
+    align-content: center;
   }
 
   .nav-toggle {
     display: flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.6rem;
   }
 
+  /* menu a tendina animato, non più display:none secco */
   .nav-links {
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 0;
     width: 100%;
-    padding: 0.5rem 0 1rem;
-    border-top: 1px solid var(--border);
+    order: 3;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    padding: 0;
+    border-top: 1px solid transparent;
+    background: rgba(13, 13, 13, 0.97);
+    transition: max-height 0.45s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.3s ease,
+                padding 0.45s ease,
+                visibility 0s linear 0.45s;
+  }
+
+  #nav.nav-open {
+    height: auto;
+    background: rgba(13, 13, 13, 0.97);
   }
 
   #nav.nav-open .nav-links {
-    display: flex;
+    max-height: 70svh;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+    padding: 0.4rem 0 0.8rem;
+    border-top-color: var(--border);
+    overflow-y: auto;
   }
 
   .nav-links a {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     letter-spacing: 0.18em;
-    padding: 0.75rem 0;
+    padding: 0.85rem 0;
     border-bottom: 1px solid var(--border);
     display: block;
   }
 
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a.is-active {
+    color: var(--accent);
+  }
+
   .section {
-    padding: 5rem 1.5rem;
+    padding: 4.5rem 1.4rem;
+  }
+
+  .section + .section::before {
+    width: calc(100% - 2.8rem);
   }
 
   .section-hero {
-    padding: 0 1.5rem 3rem;
+    padding: 0 1.4rem 3rem;
   }
 
-  .video-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .hero-banner {
+    margin-bottom: 2rem;
   }
 
+  .tagline {
+    font-size: 1.05rem;
+  }
+
+  .scroll-cue {
+    bottom: 1rem;
+    font-size: 0.5rem;
+  }
+
+  .scroll-cue span {
+    height: 1.6rem;
+  }
+
+  .section-title {
+    margin-bottom: 1.8rem;
+  }
+
+  .news-latest-title {
+    font-size: 1.3rem;
+  }
+
+  .video-grid,
   .photo-grid {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 0.35rem;
   }
 
   .live-item {
     grid-template-columns: 1fr auto;
     row-gap: 0.2rem;
+    padding: 1.2rem 0;
   }
 
   .live-date {
     grid-column: 1 / -1;
   }
 
+  .live-action a {
+    padding: 0.5rem 0.8rem;
+  }
+
+  .album-cover-link {
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .music-link {
+    padding: 1.1rem 0;
+  }
+
+  .contact-icons {
+    gap: 1.5rem;
+  }
+
+  .contact-icon svg {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+
+  .post-title {
+    font-size: 1.5rem;
+  }
+
+  .news-full-item,
+  .news-preview-item {
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: flex-start;
+  }
+
   .page-container,
   .post-container {
-    padding: calc(var(--nav-h) + 3rem) 1.5rem 4rem;
+    padding: calc(var(--nav-h) + 3rem) 1.4rem 4rem;
+  }
+
+  footer {
+    padding: 2.2rem 1.4rem calc(2.2rem + env(safe-area-inset-bottom));
   }
 }
