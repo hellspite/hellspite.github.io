@@ -50,3 +50,6 @@ other = "Chiudi"
 other = "Precedente"
 [next]
 other = "Successiva"
+
+[past_shows]
+other = "Date passate"

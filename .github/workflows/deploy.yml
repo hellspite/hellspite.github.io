@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  # ricostruisce una volta al giorno: senza, il sito resta all'ultimo push
+  # e una data live passata continua a comparire come prossima
+  schedule:
+    - cron: "25 4 * * *"
   workflow_run:
     workflows: ["Fetch Instagram Photos"]
     types: [completed]

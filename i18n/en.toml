@@ -50,3 +50,6 @@ other = "Close"
 other = "Previous"
 [next]
 other = "Next"
+
+[past_shows]
+other = "Past shows"

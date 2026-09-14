@@ -644,6 +644,10 @@ body.lightbox-open {
   overflow: hidden;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 /* ── LIVE ── */
 
 .live-list {
@@ -713,6 +717,42 @@ body.lightbox-open {
   font-size: 0.65rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* archivio date passate: c'e', ma non compete con quelle in programma */
+
+.live-past {
+  margin-top: 1.8rem;
+}
+
+.live-past > summary {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.4rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.live-past > summary::-webkit-details-marker {
+  display: none;
+}
+
+.live-past > summary::after {
+  content: " +";
+}
+
+.live-past[open] > summary::after {
+  content: " \2013";
+}
+
+.live-past > summary:hover {
+  color: var(--text);
+}
+
+.live-item.is-past .live-venue {
   color: var(--muted);
 }
 

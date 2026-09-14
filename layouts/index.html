@@ -20,7 +20,7 @@
       {{ if and (not $next) (ge .date $today) }}{{ $next = . }}{{ end }}
     {{ end }}
     {{ with $next }}
-    <a href="#live" class="hero-next-live">
+    <a href="#live" class="hero-next-live" data-next-live data-date="{{ .date }}">
       <span class="hero-next-label">{{ i18n "next_show" }}</span>
       <time class="hero-next-date" datetime="{{ .date }}">{{ time.Format "2 Jan 2006" .date }}</time>
       <span class="hero-next-place">{{ .venue }}, {{ .city }}</span>
@@ -69,35 +69,35 @@
     <h2 class="section-title">{{ i18n "nav_live" }}</h2>
     {{ $today := now.Format "2006-01-02" }}
     {{ $upcoming := slice }}
+    {{ $past := slice }}
     {{ range sort site.Data.live.dates "date" }}
       {{ if ge .date $today }}
         {{ $upcoming = $upcoming | append . }}
+      {{ else }}
+        {{ $past = $past | append . }}
       {{ end }}
     {{ end }}
-    {{ if $upcoming }}
-      <ul class="live-list">
-        {{ range $upcoming }}
-        <li class="live-item">
-          <time class="live-date" datetime="{{ .date }}">{{ time.Format "Mon 2 Jan 2006" .date }}</time>
-          <span class="live-details">
-            <span class="live-venue">{{ .venue }}</span>
-            <span class="live-city">{{ .city }}</span>
-            {{ if .address }}<span class="live-address">{{ .address }}</span>{{ end }}
-            {{ if .time }}<span class="live-time">{{ .time }}</span>{{ end }}
-          </span>
-          <span class="live-action">
-            {{ if .sold_out }}
-              <span class="sold-out">{{ i18n "sold_out" }}</span>
-            {{ else if .link }}
-              <a href="{{ .link }}" target="_blank" rel="noopener noreferrer">{{ i18n "tickets" }}</a>
-            {{ end }}
-          </span>
-        </li>
+
+    {{/* questa divisione e' quella del giorno del build: lo script la rifa' nel
+         browser, cosi' una data passata non resta in programma nemmeno se il
+         sito non viene ricostruito */}}
+    <ul class="live-list" data-live-upcoming{{ if not $upcoming }} hidden{{ end }}>
+      {{ range $upcoming }}
+      {{ partial "live-item.html" (dict "date" . "past" false) }}
+      {{ end }}
+    </ul>
+
+    <p class="no-content" data-live-empty{{ if $upcoming }} hidden{{ end }}>{{ i18n "no_shows" }}</p>
+
+    {{/* le date passate non spariscono: dicono che la band suona davvero */}}
+    <details class="live-past" data-live-archive{{ if not $past }} hidden{{ end }}>
+      <summary>{{ i18n "past_shows" }}</summary>
+      <ul class="live-list live-list-past" data-live-past-list>
+        {{ range sort $past "date" "desc" }}
+        {{ partial "live-item.html" (dict "date" . "past" true) }}
         {{ end }}
       </ul>
-    {{ else }}
-      <p class="no-content">{{ i18n "no_shows" }}</p>
-    {{ end }}
+    </details>
   </div>
 </section>
 

@@ -1,0 +1,23 @@
+{{/* una riga della lista date. con past: la data e' gia' passata, niente biglietti */}}
+{{ $d := .date }}
+{{ $past := .past }}
+<li class="live-item{{ if $past }} is-past{{ end }}"
+    data-date="{{ $d.date }}"
+    data-short="{{ time.Format "2 Jan 2006" $d.date }}">
+  <time class="live-date" datetime="{{ $d.date }}">{{ time.Format "Mon 2 Jan 2006" $d.date }}</time>
+  <span class="live-details">
+    <span class="live-venue">{{ $d.venue }}</span>
+    <span class="live-city">{{ $d.city }}</span>
+    {{ with $d.address }}<span class="live-address">{{ . }}</span>{{ end }}
+    {{ with $d.time }}<span class="live-time">{{ . }}</span>{{ end }}
+  </span>
+  <span class="live-action">
+    {{ if not $past }}
+      {{ if $d.sold_out }}
+        <span class="sold-out">{{ i18n "sold_out" }}</span>
+      {{ else if $d.link }}
+        <a href="{{ $d.link }}" target="_blank" rel="noopener noreferrer">{{ i18n "tickets" }}</a>
+      {{ end }}
+    {{ end }}
+  </span>
+</li>

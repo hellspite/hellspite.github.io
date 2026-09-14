@@ -150,6 +150,57 @@
     }, { passive: true });
   }
 
+  /* ── live: a mezzanotte una data diventa passata, ma la pagina e' statica e
+     porta la data del build. Qui rifacciamo la divisione col giorno vero ── */
+  var liveUpcoming = document.querySelector('[data-live-upcoming]');
+  var livePastList = document.querySelector('[data-live-past-list]');
+
+  if (liveUpcoming && livePastList) {
+    var d = new Date();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var today = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+
+    /* scorrendole dalla piu' vecchia e mettendole sempre in cima,
+       l'archivio resta ordinato dalla piu' recente */
+    Array.prototype.slice.call(liveUpcoming.children).forEach(function (li) {
+      if (!li.dataset.date || li.dataset.date >= today) return;
+      li.classList.add('is-past');
+      var action = li.querySelector('.live-action');
+      if (action) action.innerHTML = '';
+      livePastList.insertBefore(li, livePastList.firstChild);
+    });
+
+    var liveArchive = document.querySelector('[data-live-archive]');
+    var liveEmpty = document.querySelector('[data-live-empty]');
+    var stillUpcoming = liveUpcoming.children.length;
+
+    liveUpcoming.hidden = !stillUpcoming;
+    if (liveEmpty) liveEmpty.hidden = !!stillUpcoming;
+    if (liveArchive) liveArchive.hidden = !livePastList.children.length;
+
+    /* l'hero annuncia la prossima data: se non lo e' piu', passa a quella dopo */
+    var heroNext = document.querySelector('[data-next-live]');
+    if (heroNext && heroNext.dataset.date < today) {
+      var first = liveUpcoming.children[0];
+      if (!first) {
+        heroNext.hidden = true;
+      } else {
+        var when = heroNext.querySelector('.hero-next-date');
+        var place = heroNext.querySelector('.hero-next-place');
+        var venue = first.querySelector('.live-venue');
+        var city = first.querySelector('.live-city');
+        heroNext.dataset.date = first.dataset.date;
+        if (when) {
+          when.setAttribute('datetime', first.dataset.date);
+          when.textContent = first.dataset.short;
+        }
+        if (place && venue && city) {
+          place.textContent = venue.textContent + ', ' + city.textContent;
+        }
+      }
+    }
+  }
+
   /* ── comparsa progressiva delle sezioni ── */
   if ('IntersectionObserver' in window) {
     var revealer = new IntersectionObserver(function (entries) {
