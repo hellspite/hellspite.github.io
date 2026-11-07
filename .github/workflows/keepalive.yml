@@ -1,0 +1,27 @@
+name: Keepalive
+
+# GitHub disattiva i workflow programmati dopo 60 giorni senza commit.
+# Una volta a settimana questo li riabilita via API (si azzera il conteggio)
+# senza creare commit finti nel repository.
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Riabilita i workflow programmati
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          for wf in deploy.yml instagram.yml keepalive.yml; do
+            gh api -X PUT "repos/$REPO/actions/workflows/$wf/enable"
+            echo "OK: $wf"
+          done
