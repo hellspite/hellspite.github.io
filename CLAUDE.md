@@ -39,13 +39,13 @@ Questo file serve da memoria tra una sessione e l'altra: cosa c'è, come funzion
 
 - **giu 2026** — Setup iniziale Hugo; sezioni Video, News, Foto; nav con hamburger su mobile; icone SVG nei contatti; hero panoramica con logo integrato; copertina album cliccabile; workflow Instagram automatico con immagini locali; SEO (Open Graph, Twitter Card, canonical, favicon, robots.txt); CNAME per `hellspite.com`; email `hellspite@hellspite.com`; date live con indirizzo e orario; prima news "Il sito è online".
 - **estate–autunno 2026** — Riordino sezioni; data live 11/09/2026 a Latina; scorrimento fluido e ottimizzazioni mobile; nome band e prossima data nell'hero; player Bandcamp embed; lightbox foto; immagini WebP; i18n completo IT/EN con switcher, hreflang e lingua ricordata; date tradotte; news leggibili in home con archivio separato; fix `baseURL` (usciva http); archivio automatico delle date passate; rebuild giornaliero; keepalive settimanale dei workflow (ultimo commit: 2026-11-07).
+- **nov 2026** — Aggiunto `CLAUDE.md` come memoria; eliminato `data/photos.yaml` (non più usato).
 
 ## Da fare / idee aperte
 
 - [ ] **Link Spotify e Deezer**: in `hugo.toml` sono vuoti (`spotify = ""`, `deezer = ""`), quindi i pulsanti non compaiono.
 - [ ] **Date live**: tutte le date in `data/live.yaml` sono passate (l'ultima è l'11/09/2026) → aggiungere le prossime quando ci sono.
 - [ ] **News**: c'è solo "Il sito è online" (15/06/2026) → pubblicare aggiornamenti.
-- [ ] **Pulizia**: `data/photos.yaml` non è più usato dai template (sostituito da `instagram.json`) → si può eliminare.
 - [ ] **Token Instagram**: i token Graph API scadono; se le foto smettono di aggiornarsi, rigenerare il secret `INSTAGRAM_TOKEN`. Il workflow usa l'API `v18.0`, valutare di aggiornarla.
 - [ ] **Foto Instagram vecchie**: il workflow scarica le nuove immagini ma non cancella quelle che escono dagli ultimi 9 → `assets/img/instagram/` cresce nel tempo.
 
