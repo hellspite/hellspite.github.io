@@ -39,7 +39,7 @@ Questo file serve da memoria tra una sessione e l'altra: cosa c'è, come funzion
 
 - **giu 2026** — Setup iniziale Hugo; sezioni Video, News, Foto; nav con hamburger su mobile; icone SVG nei contatti; hero panoramica con logo integrato; copertina album cliccabile; workflow Instagram automatico con immagini locali; SEO (Open Graph, Twitter Card, canonical, favicon, robots.txt); CNAME per `hellspite.com`; email `hellspite@hellspite.com`; date live con indirizzo e orario; prima news "Il sito è online".
 - **estate–autunno 2026** — Riordino sezioni; data live 11/09/2026 a Latina; scorrimento fluido e ottimizzazioni mobile; nome band e prossima data nell'hero; player Bandcamp embed; lightbox foto; immagini WebP; i18n completo IT/EN con switcher, hreflang e lingua ricordata; date tradotte; news leggibili in home con archivio separato; fix `baseURL` (usciva http); archivio automatico delle date passate; rebuild giornaliero; keepalive settimanale dei workflow (ultimo commit: 2026-11-07).
-- **nov 2026** — Aggiunto `CLAUDE.md` come memoria; eliminato `data/photos.yaml` (non più usato).
+- **nov 2026** — Aggiunto `CLAUDE.md` come memoria; eliminato `data/photos.yaml` (non più usato). Icona per "Aggiungi a Home" su iPhone: `static/apple-touch-icon.png` (180×180, iOS ignora le favicon SVG) + `static/site.webmanifest` con icone 192/512 in `static/img/`. Se cambia `favicon.svg`, rigenerare anche le PNG.
 
 ## Da fare / idee aperte
 

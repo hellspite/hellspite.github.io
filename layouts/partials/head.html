@@ -61,6 +61,10 @@
 {{ end }}
 
 <link rel="icon" href="{{ "img/favicon.svg" | relURL }}" type="image/svg+xml">
+{{/* iOS ignora le favicon SVG: senza questa PNG, "Aggiungi a Home" mostra una lettera su sfondo grigio */}}
+<link rel="apple-touch-icon" sizes="180x180" href="{{ "apple-touch-icon.png" | relURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
+<meta name="apple-mobile-web-app-title" content="Hellspite">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
